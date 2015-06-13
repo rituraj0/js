@@ -1,3 +1,108 @@
+
+var canvas = document.getElementById("canv");
+
+clickX=[];
+clickY=[];
+
+console.log("Hello World");
+
+function addClick(x,y)
+{
+	//console.log("in addclick ");
+	clickX.push(x);
+	clickY.push(y);
+}
+
+
+function draw_rect()
+{
+	 var can_context = canvas.getContext("2d");
+	 //alert(can_context);
+	 can_context.fillRect(50,50,50,50);
+}
+
+paint=false;
+
+function redraw()
+{
+	console.log( clickY.length);
+
+	if( paint )
+	 {
+		var can_context = canvas.getContext("2d");
+			can_context.strokeStyle = "#df4b26";
+  			can_context.lineJoin = "round";
+  			can_context.lineWidth = 5;
+
+		for( var i = 1; i< clickX.length ;i++)
+			 {
+			 	can_context.beginPath();
+
+			 	if( i > 0)
+			 	{
+			 		can_context.moveTo( clickX[i-1] , clickY[i-1]);
+			 	}
+			 	else
+			 	{
+			 		can_context.moveTo( clickX[i] - 1 , clickY[i] );
+			 	}
+
+			 	can_context.lineTo( clickX[i] , clickY[i] );
+
+			 	can_context.closePath();
+			 	can_context.stroke()
+			 }
+	}
+}
+
+//- this.offsetLeft
+// - this.offsetTop
+// Add mouse and touch event listeners to the canvas
+
+
+	var press = function (e) 
+	{
+		// Mouse down location
+		var mouseX = e.pageX ,	mouseY = e.pageY ;
+
+		paint = true;
+		addClick(mouseX, mouseY);
+		redraw();
+	};
+
+	var	drag = function (e) 
+	{
+			if (paint)
+			{
+				addClick(e.pageX , e.pageY);				
+			}
+
+			redraw();
+			
+	};
+
+	var	release = function () 
+	{
+			paint = false;
+			redraw();
+	};
+
+	var	cancel = function ()
+	{
+			paint = false;
+			redraw();
+	};
+
+	// Add mouse event listeners to canvas element
+	canvas.addEventListener("mousedown", press, false);
+	canvas.addEventListener("mousemove", drag, false);
+	canvas.addEventListener("mouseup", release);
+	canvas.addEventListener("mouseout", cancel, false);
+
+	console.log("in var main");
+
+
+
 //alert("kya hai");
 /*
 console.log("logged");
@@ -40,10 +145,36 @@ alert('Ouch! Stop poking me!');
 }
 
 */
-
+/*
 var but = document.querySelector('button');
 but.onclick = function()
 					{
 						var name = prompt("Eneter your name");
 						document.querySelector('h1').innerHTML = name;
 					}
+*/
+
+/*
+console.log("logging into console");
+*/
+
+/*
+var canvas = document.getElementById("canv");
+
+//alert(canvas);
+
+function draw_rect()
+{
+	 var can_context = canvas.getContext("2d");
+	 //alert(can_context);
+	 can_context.fillRect(50,50,50,50);
+}
+var but = document.querySelector('button');
+
+//alert(but);
+but.onclick = function()
+					{
+						alert("clicked");
+						draw_rect();
+					}
+*/
