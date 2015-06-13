@@ -3,6 +3,10 @@ var canvas = document.getElementById("canv");
 
 clickX=[];
 clickY=[];
+last = 0;
+
+histX=[];
+histY=[];
 
 console.log("Hello World");
 
@@ -11,6 +15,9 @@ function addClick(x,y)
 	//console.log("in addclick ");
 	clickX.push(x);
 	clickY.push(y);
+
+	histX.push(x);
+	histY.push(y);
 }
 
 
@@ -23,9 +30,18 @@ function draw_rect()
 
 paint=false;
 
+
+function clear_data()
+{
+	paint=false;
+	clickY.length=0;
+	clickX.length=0;
+	last=0;
+
+}
 function redraw()
 {
-	console.log( clickY.length);
+	//console.log( clickY.length);
 
 	if( paint )
 	 {
@@ -34,7 +50,7 @@ function redraw()
   			can_context.lineJoin = "round";
   			can_context.lineWidth = 5;
 
-		for( var i = 1; i< clickX.length ;i++)
+		for( var i = last; i< clickX.length ;i++)
 			 {
 			 	can_context.beginPath();
 
@@ -52,6 +68,8 @@ function redraw()
 			 	can_context.closePath();
 			 	can_context.stroke()
 			 }
+
+		last = clickX.length;
 	}
 }
 
@@ -67,6 +85,7 @@ function redraw()
 
 		paint = true;
 		addClick(mouseX, mouseY);
+		console.log("mouse DOWn");
 		redraw();
 	};
 
@@ -77,19 +96,23 @@ function redraw()
 				addClick(e.pageX , e.pageY);				
 			}
 
-			redraw();
-			
+			console.log(".");
+			redraw();			
 	};
 
 	var	release = function () 
 	{
 			paint = false;
+			console.log("mouse up event");
 			redraw();
+			clear_data();
 	};
 
 	var	cancel = function ()
 	{
 			paint = false;
+			console.log("mouse out");
+			clear_data();
 			redraw();
 	};
 
